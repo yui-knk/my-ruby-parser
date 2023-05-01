@@ -495,7 +495,16 @@ print_indent(FILE *fp, int indent)
         fprintf(io, fmt, __VA_ARGS__); \
     } while (0)
 
-#define PRINT_ID(io, id) FPRINTF(io, "id: %lu\n", id)
+#define PRINT_ID(io, id) \
+    do { \
+        if (id < 128) { \
+            FPRINTF(io, "id: %c\n", (char)id); \
+        } \
+        else { \
+            FPRINTF(io, "id: %lu\n", id); \
+        } \
+    } while (0)
+
 #define PRINT_LIT(io, lit) \
     do { \
         print_indent(io, indent); \
